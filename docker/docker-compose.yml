@@ -1,4 +1,13 @@
 services:
+
+  oracle_Db:
+    image: oracle/database:21.3.0-xe
+    volumes:
+      - /home/develop/software/oracle/oradata:/opt/oracle/oradata
+    ports:
+      - 11521:1521
+      - 15500:5500
+
   db:
     image: mysql:latest
     container_name: mysql
