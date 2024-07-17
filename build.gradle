@@ -5,7 +5,8 @@ plugins {
 	id 'java'
 	
 	// Servletを使用するための設定
-	id 'war'
+	// 【Java8検証】jarコマンド起動のため、一時的にコメントとさせていただきました
+	//id 'war'
 
 	// SpringBootを使用するための設定
 	id 'org.springframework.boot' version '3.3.1'
