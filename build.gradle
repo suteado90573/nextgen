@@ -24,9 +24,9 @@ version = '0.0.1-SNAPSHOT'
 // Javaの設定
 java {
 
-	// Java 21 を使用する設定
+	// Java 21 -> 8 を使用する設定
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(8)
 	}
 }
 
