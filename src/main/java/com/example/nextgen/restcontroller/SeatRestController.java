@@ -50,7 +50,7 @@ public class SeatRestController {
 		// 起動したコントローラメソッドをログ記録
 		log.info("GET /api/v1/seats");
 
-		var getSeatOut = new GetSeatOut();
+		GetSeatOut getSeatOut = new GetSeatOut();
 		try {
 			// 業務ロジックを呼び出す
 			List<Seat> seatTranList = service.getSeatList();
@@ -72,10 +72,10 @@ public class SeatRestController {
 		// 起動したコントローラメソッドをログ記録
 		log.info("POST /api/v1/search");
 
-		var postSeatOut = new PostSeatOut();
+		PostSeatOut postSeatOut = new PostSeatOut();
 		try {
 			// 業務ロジックを呼び出す
-			var searchSeatCondInNonBlank = new SearchSeatCondIn();
+			SearchSeatCondIn searchSeatCondInNonBlank = new SearchSeatCondIn();
 			propCopyUtil.copyBlankAsNull(searchSeatCondIn, searchSeatCondInNonBlank);
 			List<Seat> seatList = service.searchSeat(searchSeatCondInNonBlank);
 			postSeatOut.setSeatList(seatList);
@@ -96,7 +96,7 @@ public class SeatRestController {
 		// 起動したコントローラメソッドをログ記録
 		log.info("POST /api/v1/seats");
 
-		var postSeatOut = new PostSeatOut();
+		PostSeatOut postSeatOut = new PostSeatOut();
 		try {
 			// 業務ロジックを呼び出す
 			service.insertSeat(seat);
@@ -119,10 +119,10 @@ public class SeatRestController {
 		// 起動したコントローラメソッドをログ記録
 		log.info("DELETE /api/v1/seats");
 
-		var deleteSeatOut = new DeleteSeatOut();
+		DeleteSeatOut deleteSeatOut = new DeleteSeatOut();
 		try {
 			// 業務ロジックを呼び出す
-			var seat = new Seat();
+			Seat seat = new Seat();
 			seat.setId(id);
 			service.deleteSeat(seat);
 			List<Seat> seatList = service.getSeatList();

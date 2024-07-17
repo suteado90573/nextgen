@@ -117,7 +117,7 @@ public class TableUtil {
 			}
 
 			// エンティティ定義のEXCELファイルを読み込む
-			var sheetMap = readExcel(fileOrDir.getAbsolutePath());
+			Map<String, List<Map<String, String>>> sheetMap = readExcel(fileOrDir.getAbsolutePath());
 
 			// 読み込んだすべてのシートを処理するまでループ
 			for (Map.Entry<String, List<Map<String, String>>> entry : sheetMap.entrySet()) {

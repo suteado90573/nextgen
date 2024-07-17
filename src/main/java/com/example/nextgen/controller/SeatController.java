@@ -149,7 +149,7 @@ public class SeatController {
 		log.info("/insertSeats");
 
 		// APIを呼び出す
-		var seat = new Seat();
+		Seat seat = new Seat();
 		String randId = String.valueOf(new Date().getTime() / 100);
 		seat.setStand("stand" + randId);
 		seat.setEvent("event" + randId);
