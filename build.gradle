@@ -74,7 +74,8 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Oracleコネクタを使用するための設定
-	implementation 'com.oracle.database.jdbc:ojdbc11'
+	//implementation 'com.oracle.database.jdbc:ojdbc11'
+	implementation 'com.oracle.database.jdbc:ojdbc8'
 
 	// lombokを使用するための設定
 	annotationProcessor 'org.projectlombok:lombok'
