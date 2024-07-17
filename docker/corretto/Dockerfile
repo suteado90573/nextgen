@@ -1,22 +1,32 @@
-FROM alpine:3.19
+FROM amazonlinux:2
 
-ARG version=21.0.3.9.1
+ARG version=1.8.0_412.b08-1
+# In addition to installing the Amazon corretto, we also install
+# fontconfig. The folks who manage the docker hub's
+# official image library have found that font management
+# is a common usecase, and painpoint, and have
+# recommended that Java images include font support.
+#
+# See:
+#  https://github.com/docker-library/official-images/blob/master/test/tests/java-uimanager-font/container.java
 
-# Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently.
-# The Corretto team will update this file but you may see a few days' delay.
-RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads/resources/licenses/alpine/THIRD-PARTY-LICENSES-20200824.tar.gz && \
-    echo "82f3e50e71b2aee21321b2b33de372feed5befad6ef2196ddec92311bc09becb  /THIRD-PARTY-LICENSES-20200824.tar.gz" | sha256sum -c - && \
-    tar x -ovzf THIRD-PARTY-LICENSES-20200824.tar.gz && \
-    rm -rf THIRD-PARTY-LICENSES-20200824.tar.gz && \
-    wget -O /etc/apk/keys/amazoncorretto.rsa.pub https://apk.corretto.aws/amazoncorretto.rsa.pub && \
-    SHA_SUM="6cfdf08be09f32ca298e2d5bd4a359ee2b275765c09b56d514624bf831eafb91" && \
-    echo "${SHA_SUM}  /etc/apk/keys/amazoncorretto.rsa.pub" | sha256sum -c - && \
-    echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
-    apk add --no-cache amazon-corretto-21=$version-r0 && \
-    rm -rf /usr/lib/jvm/java-21-amazon-corretto/lib/src.zip
-
+# The logic and code related to Fingerprint is contributed by @tianon in a Github PR's Conversation
+# Comment = https://github.com/docker-library/official-images/pull/7459#issuecomment-592242757
+# PR = https://github.com/docker-library/official-images/pull/7459
+RUN set -eux \
+    && export GNUPGHOME="$(mktemp -d)" \
+    && curl -fL -o corretto.key https://yum.corretto.aws/corretto.key \
+    && gpg --batch --import corretto.key \
+    && gpg --batch --export --armor '6DC3636DAE534049C8B94623A122542AB04F24E3' > corretto.key \
+    && rpm --import corretto.key \
+    && rm -r "$GNUPGHOME" corretto.key \
+    && curl -fL -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo \
+    && grep -q '^gpgcheck=1' /etc/yum.repos.d/corretto.repo \
+    && echo "priority=9" >> /etc/yum.repos.d/corretto.repo \
+    && yum install -y java-1.8.0-amazon-corretto-devel-$version \
+    && (find /usr/lib/jvm/java-1.8.0-amazon-corretto -name src.zip -delete || true) \
+    && yum install -y fontconfig \
+    && yum clean all
 
 ENV LANG C.UTF-8
-
-ENV JAVA_HOME=/usr/lib/jvm/default-jvm
-ENV PATH=$PATH:/usr/lib/jvm/default-jvm/bin
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto
