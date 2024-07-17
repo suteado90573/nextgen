@@ -60,7 +60,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// MyBatisを使用するための設定
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	//implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.2'
 
 	// SpringSessionを使用するための設定(まだセッションは使わないため、コメントアウト)
 	//implementation 'org.springframework.session:spring-session-core'
