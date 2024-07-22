@@ -1,23 +1,46 @@
+# サービスを定義する
 services:
 
-  oracle_Db:
+  # データベースの設定を行う
+  db:
+    # イメージは無償版の "21c-xe" を使用する
     image: oracle/database:21.3.0-xe
+
+    # コンテナ名を指定する
+    container_name: oracle
+
+    # ホスト側 "/home/develop/software/oracle/oradata" を、コンテナ側 "/opt/oracle/oradata" にマッピングする
     volumes:
       - /home/develop/software/oracle/oradata:/opt/oracle/oradata
+
+    # ポートを設定する
     ports:
+
+      # ホスト側 11521 ポートを、コンテナ側 1521 ポートにマッピングする
       - 11521:1521
+
+      # ホスト側 15500 ポートを、コンテナ側 5500 ポートにマッピングする
       - 15500:5500
 
+  # ビルド環境の設定を行う
   build_env:
+
+    # コンテナ名を指定する
     container_name: build_env
+
+    # amazon correttoのDockerfileを使用して、ビルド環境を構築する
     build:
       dockerfile: corretto/Dockerfile
+
+    # ポートを設定する
     ports:
-      # ホスト側の18080ポートを、コンテナ側の8080ポートにマッピングする
+
+      # ホスト側 18080 ポートを、コンテナ側 8080 ポートにマッピングする
       - 18080:8080
+
+    # フォアグラウンドプロセスを用意することにより、起動後にすぐ終了してしまう現象を防ぐ
     tty: true
+
+    # ホスト側 "/home/develop/nextgen" を、コンテナ側 "/home/develop/nextgen" にマッピングする
     volumes:
       - /home/develop/nextgen:/home/develop/nextgen
-
-volumes:
-  mysql_data:
